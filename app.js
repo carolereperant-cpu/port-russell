@@ -30,6 +30,15 @@ app.use(session({
 const authRoutes = require('./routes/auth');
 app.use('/', authRoutes);
 
+const catwayRoutes = require('./routes/catways');
+app.use('/catways', catwayRoutes);
+
+const reservationRoutes = require('./routes/reservations');
+app.use('/catways/:id/reservations', reservationRoutes);
+
+const userRoutes = require('./routes/users');
+app.use('/users', userRoutes);
+
 // Route de test
 app.get('/', (req, res) => {
   res.send('Serveur fonctionnel !');
