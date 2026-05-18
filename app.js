@@ -27,6 +27,9 @@ app.use(session({
   saveUninitialized: false
 }));
 
+const authRoutes = require('./routes/auth');
+app.use('/', authRoutes);
+
 // Route de test
 app.get('/', (req, res) => {
   res.send('Serveur fonctionnel !');
