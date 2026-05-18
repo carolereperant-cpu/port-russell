@@ -3,6 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
+const User = require('./models/user');
 
 const connectDB = require('./config/db');
 
@@ -39,13 +40,46 @@ app.use('/catways/:id/reservations', reservationRoutes);
 const userRoutes = require('./routes/users');
 app.use('/users', userRoutes);
 
-// Route de test
 app.get('/', (req, res) => {
-  res.send('Serveur fonctionnel !');
+  res.render('index');
+});
+
+const { isAuthenticated } = require('./middleware/auth');
+const Reservation = require('./models/reservation');
+
+app.get('/dashboard', isAuthenticated, async (req, res) => {
+  try {
+    const today = new Date();
+    const reservations = await Reservation.find({
+      endDate: { $gte: today }
+    });
+    res.render('dashboard', {
+      user: req.session.user,
+      reservations,
+      today
+    });
+  } catch (error) {
+    res.status(500).send('Erreur serveur');
+  }
 });
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 3000;
+
+app.get('/setup', async (req, res) => {
+  const User = require('./models/user');
+  try {
+    const user = await User.create({
+      username: 'admin',
+      email: 'admin@port-russell.fr',
+      password: 'admin123'
+    });
+    res.send('Utilisateur admin créé : ' + user.email);
+  } catch (error) {
+    res.send('Erreur : ' + error.message);
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });
