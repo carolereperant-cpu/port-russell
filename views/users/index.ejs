@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Utilisateurs - Port Russell</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f0f4f8; }
+    nav { background: #1a3c5e; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+    nav h1 { font-size: 20px; }
+    nav a { color: white; text-decoration: none; margin-left: 20px; }
+    .container { padding: 30px; }
+    h2 { color: #1a3c5e; margin-bottom: 20px; }
+    table { width: 100%; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-collapse: collapse; }
+    th { background: #1a3c5e; color: white; padding: 12px; text-align: left; }
+    td { padding: 12px; border-bottom: 1px solid #eee; }
+    .btn { padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer; text-decoration: none; font-size: 14px; }
+    .btn-blue { background: #1a3c5e; color: white; }
+    .btn-red { background: #c00; color: white; }
+    .btn-green { background: #28a745; color: white; display: inline-block; margin-bottom: 20px; padding: 10px 20px; }
+    form { display: inline; }
+  </style>
+</head>
+<body>
+  <nav>
+    <h1>⚓ Port de Plaisance Russell</h1>
+    <div>
+      <a href="/dashboard">Tableau de bord</a>
+      <a href="/catways">Catways</a>
+      <a href="/reservations">Réservations</a>
+      <a href="/logout">Se déconnecter</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Gestion des Utilisateurs</h2>
+    <a href="/users/new" class="btn btn-green">+ Ajouter un utilisateur</a>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nom d'utilisateur</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+          <tr>
+            <td><%= user.username %></td>
+            <td><%= user.email %></td>
+            <td>
+              <a href="/users/<%= user.email %>" class="btn btn-blue">Détail</a>
+              <form method="POST" action="/users/<%= user.email %>?_method=DELETE">
+                <button type="submit" class="btn btn-red" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

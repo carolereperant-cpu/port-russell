@@ -76,6 +76,10 @@ app.get('/reservations/new', isAuthenticated, (req, res) => {
   res.render('reservations/new');
 });
 
+app.get('/users/new', isAuthenticated, (req, res) => {
+  res.render('users/new');
+});
+
 // Démarrage du serveur
 const PORT = process.env.PORT || 3000;
 
