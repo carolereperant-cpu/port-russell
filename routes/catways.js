@@ -18,6 +18,9 @@ const {
  */
 router.get('/', isAuthenticated, getAllCatways);
 router.post('/', isAuthenticated, createCatway);
+router.get('/new', isAuthenticated, (req, res) => {
+  res.render('catways/new');
+});
 router.get('/:id', isAuthenticated, getCatway);
 router.put('/:id', isAuthenticated, updateCatway);
 router.delete('/:id', isAuthenticated, deleteCatway);

@@ -4,9 +4,8 @@ const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
 const User = require('./models/user');
-
+const methodOverride = require('method-override');
 const connectDB = require('./config/db');
-
 const app = express();
 
 // Connexion à MongoDB
@@ -20,6 +19,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 // Sessions
 app.use(session({
@@ -61,6 +61,19 @@ app.get('/dashboard', isAuthenticated, async (req, res) => {
   } catch (error) {
     res.status(500).send('Erreur serveur');
   }
+});
+
+app.get('/reservations', isAuthenticated, async (req, res) => {
+  try {
+    const reservations = await Reservation.find();
+    res.render('reservations/index', { reservations });
+  } catch (error) {
+    res.status(500).send('Erreur serveur');
+  }
+});
+
+app.get('/reservations/new', isAuthenticated, (req, res) => {
+  res.render('reservations/new');
 });
 
 // Démarrage du serveur
