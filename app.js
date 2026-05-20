@@ -86,24 +86,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const PORT = process.env.PORT || 3000;
 
-app.get('/setup', async (req, res) => {
-  const User = require('./models/user');
-  try {
-    const user = await User.create({
-      username: 'admin',
-      email: 'admin@port-russell.fr',
-      password: 'admin123'
-    });
-    res.send('Utilisateur admin créé : ' + user.email);
-  } catch (error) {
-    res.send('Erreur : ' + error.message);
-  }
-});
-
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });
-
-
 
 module.exports = app;
