@@ -7,6 +7,8 @@ const User = require('./models/user');
 const methodOverride = require('method-override');
 const connectDB = require('./config/db');
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 
 // Connexion à MongoDB
 connectDB();
@@ -80,7 +82,8 @@ app.get('/users/new', isAuthenticated, (req, res) => {
   res.render('users/new');
 });
 
-// Démarrage du serveur
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 const PORT = process.env.PORT || 3000;
 
 app.get('/setup', async (req, res) => {
@@ -100,5 +103,7 @@ app.get('/setup', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });
+
+
 
 module.exports = app;
